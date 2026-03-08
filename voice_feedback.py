@@ -4,6 +4,7 @@ import threading
 import time
 import subprocess
 from elevenlabs import ElevenLabs
+import streamlit as st
 
 motivational_phrases = [
     "Good rep.",
@@ -34,7 +35,8 @@ class VoiceFeedback:
         self._is_speaking = False
         self._current_process = None
         
-        api_key = custom_api_key or os.environ.get("ELEVENLABS_API_KEY")
+        # api_key = custom_api_key or os.environ.get("ELEVENLABS_API_KEY")
+        api_key = custom_api_key or st.secrets["ELEVENLABS_API_KEY"]
         if not api_key:
              print("WARNING: ELEVENLABS_API_KEY missing! Voice feedback disabled.")
              self.client = None

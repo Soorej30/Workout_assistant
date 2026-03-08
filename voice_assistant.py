@@ -5,6 +5,7 @@ import time
 import speech_recognition as sr
 from groq import Groq
 from voice_feedback import VoiceFeedback
+import streamlit as st
 
 class VoiceAssistant:
     def __init__(self, tts_engine: VoiceFeedback, goggins_mode=False):
@@ -13,7 +14,8 @@ class VoiceAssistant:
         self.thread = None
         self.recognizer = sr.Recognizer()
         
-        self.groq_key = os.environ.get("GROQ_API_KEY")
+        # self.groq_key = os.environ.get("GROQ_API_KEY")
+        self.groq_key = st.secrets["GROQ_API_KEY"]
         self.client = Groq(api_key=self.groq_key) if self.groq_key else None
         
         # System prompt setting the AI persona

@@ -1,6 +1,9 @@
 import os
+import streamlit as st
+
 from elevenlabs import ElevenLabs, play
-api_key = os.environ.get("ELEVENLABS_API_KEY")
+# api_key = os.environ.get("ELEVENLABS_API_KEY")
+api_key = st.secrets["ELEVENLABS_API_KEY"]
 client = ElevenLabs(api_key=api_key)
 audio = client.text_to_speech.convert(
     voice_id="JBFqnCBsd6RMkjVDRZzb",
