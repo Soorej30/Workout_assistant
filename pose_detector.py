@@ -3,13 +3,21 @@ import mediapipe as mp
 
 class PoseDetector:
     def __init__(self, min_detection_confidence=0.5, min_tracking_confidence=0.5):
-        # MediaPipe package layout differs across some builds/Python versions.
-        # Prefer top-level solutions, then fall back to mediapipe.python.solutions.
-        try:
-            solutions = mp.solutions
-        except AttributeError:
-            from mediapipe.python import solutions as mp_solutions
-            solutions = mp_solutions
+        # MediaPipe package layout differs across builds/Python versions.
+        # Prefer top-level solutions, then try known fallback modules.
+        solutions = getattr(mp, "solutions", None)
+        if solutions is None:
+            try:
+                from mediapipe.python import solutions as mp_solutions
+                solutions = mp_solutions
+            except Exception:
+                solutions = None
+
+        if solutions is None:
+            raise RuntimeError(
+                "MediaPipe Pose is unavailable in this Python environment. "
+                "Use Python 3.11 on Streamlit Cloud and redeploy."
+            )
 
         self.mp_pose = solutions.pose
         self.mp_drawing = solutions.drawing_utils

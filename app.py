@@ -354,7 +354,15 @@ def render_tracker_screen():
         gauge_placeholder = st.empty()
 
     if getattr(st.session_state, 'tracking_initialized', False) is False:
-        st.session_state.pose = PoseDetector(min_detection_confidence=0.5, min_tracking_confidence=0.5)
+        try:
+            st.session_state.pose = PoseDetector(min_detection_confidence=0.5, min_tracking_confidence=0.5)
+        except Exception as e:
+            st.error(f"Pose engine failed to initialize: {e}")
+            st.info("Fix: deploy with Python 3.11 (add `.python-version` with `3.11`) and redeploy.")
+            if st.button("Return Home"):
+                st.session_state.app_mode = "home"
+                st.rerun()
+            return
         st.session_state.analyzer = FormAnalyzer()
         st.session_state.counter = RepCounter(exercise=st.session_state.current_exercise)
         st.session_state.fatigue = FatigueAnalyzer()
