@@ -11,3 +11,4 @@ opencv-python-headless
 matplotlib
 speechrecognition
 sounddevice
+streamlit_webrtc

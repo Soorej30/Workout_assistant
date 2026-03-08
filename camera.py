@@ -1,10 +1,12 @@
 import cv2
+from streamlit_webrtc import webrtc_streamer
 
 class Camera:
     def __init__(self, camera_id=0, zoom_factor=1.0):
         self.camera_id = camera_id
         self.zoom_factor = zoom_factor
-        self.cap = cv2.VideoCapture(self.camera_id)
+        # self.cap = cv2.VideoCapture(self.camera_id)
+        self.cap = webrtc_streamer(key="camera")
         if not self.cap.isOpened():
             raise ValueError(f"Unable to open camera with ID {self.camera_id}")
             
