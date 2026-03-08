@@ -3,8 +3,16 @@ import mediapipe as mp
 
 class PoseDetector:
     def __init__(self, min_detection_confidence=0.5, min_tracking_confidence=0.5):
-        self.mp_pose = mp.solutions.pose
-        self.mp_drawing = mp.solutions.drawing_utils
+        # MediaPipe package layout differs across some builds/Python versions.
+        # Prefer top-level solutions, then fall back to mediapipe.python.solutions.
+        try:
+            solutions = mp.solutions
+        except AttributeError:
+            from mediapipe.python import solutions as mp_solutions
+            solutions = mp_solutions
+
+        self.mp_pose = solutions.pose
+        self.mp_drawing = solutions.drawing_utils
         self.pose = self.mp_pose.Pose(
             min_detection_confidence=min_detection_confidence,
             min_tracking_confidence=min_tracking_confidence
